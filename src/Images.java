@@ -63,10 +63,13 @@ public class Images {
     //column and row of lowest energy pixel
     public void nextMin(int[][] imageArray, int col, int row) {
     	
-
-    	
     	//until you reach the top of the image
-    	while(row > 0) {
+    	if(row == 0) {
+    		
+    		//imageArray[col][row] = null; delete pixel here
+    		/// shift array over
+    		
+    	} else {
     		
     		//check left and right boundaries
         	int aboveCol = imageArray[col][row-1];
@@ -78,7 +81,7 @@ public class Images {
         	else {
         		leftCol = imageArray[col][row-1];
         	}
-        	if (col != imageArray.length) {
+        	if (col != imageArray.length - 1) {
         		rightCol = imageArray[col+1][row-1];
         	}else {
         		rightCol = imageArray[col][row-1];
