@@ -52,7 +52,7 @@ public class Images {
    
     public int getMin(int[] array) {
     	int theMin = 0;
-		for (int i=0; i<=array.length; i++) {
+		for (int i=0; i<array.length; i++) {
 			if(array[i]> theMin) {
 				theMin = array[i];
 			}
@@ -67,19 +67,21 @@ public class Images {
     	
     	//until you reach the top of the image
     	while(row > 0) {
-    	
+    		
     		//check left and right boundaries
         	int aboveCol = imageArray[col][row-1];
+        	int leftCol;
+        	int rightCol;
         	if (col != 0) {
-        		int leftCol = imageArray[col-1][row-1];
+        		leftCol = imageArray[col-1][row-1];
         	}
         	else {
-        		int leftCol = imageArray[col][row-1];
+        		leftCol = imageArray[col][row-1];
         	}
         	if (col != imageArray.length) {
-        		int rightCol = imageArray[col+1][row-1];
+        		rightCol = imageArray[col+1][row-1];
         	}else {
-        		int rightCol = imageArray[col][row-1];
+        		rightCol = imageArray[col][row-1];
         	}
         		
     		
