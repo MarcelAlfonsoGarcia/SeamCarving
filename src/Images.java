@@ -13,7 +13,7 @@ import java.awt.Color;
 
 public class Images {
 
-	public int imageArray[][];
+	//public int imageArray[][];
 	
     public static void main(String args[]) throws IOException {
         File file = new File("./DSCF1643.JPG");
@@ -64,12 +64,46 @@ public class Images {
     }
     
     //column and row of lowest energy pixel
-    public void nextMin(int col, int row) {
-    	int aboveCol = imageArray[col][row-1];
-    	int leftCol = imageArray[col][row-1];
-    	int rightCol = imageArray[col][row-1];
+    public void nextMin(int[][] imageArray, int col, int row) {
     	
-    	image[col][rows]
+
+    	
+    	//until you reach the top of the image
+    	while(row > 0) {
+    	
+    		//check left and right boundaries
+        	int aboveCol = imageArray[col][row-1];
+        	if (col != 0) {
+        		int leftCol = imageArray[col-1][row-1];
+        	}
+        	else {
+        		int leftCol = imageArray[col][row-1];
+        	}
+        	if (col != imageArray.length) {
+        		int rightCol = imageArray[col+1][row-1];
+        	}else {
+        		int rightCol = imageArray[col][row-1];
+        	}
+        		
+    		
+	    	//aboveCol is the smallest
+	    	if(aboveCol <= leftCol && aboveCol <= rightCol) {
+	    		nextMin(imageArray, col, row-1);
+	    		//imageArray[col][row] = null; delete pixel here
+	    		/// shift array over
+	    	}
+	    	//rightCol is the smallest
+	    	else if(rightCol <= leftCol && rightCol <= aboveCol) {
+	    		nextMin(imageArray, col+1, row-1);
+	    		//imageArray[col][row] = null; delete pixel here
+	    		/// shift array over
+	    	}
+	    	//leftCol is the smallest
+	    	else {
+	    		nextMin(imageArray, col-1, row-1);
+	    		//imageArray[col][row] = null; delete pixel here
+	    		/// shift array over
+	    	}
+	    }
     }
-    
 }
