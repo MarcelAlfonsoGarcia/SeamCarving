@@ -8,9 +8,6 @@ import java.awt.Color;
  * component, and saves new image 
  */
 
-
-
-
 public class Images {
 
 	//public int imageArray[][];
@@ -106,4 +103,109 @@ public class Images {
 	    	}
 	    }
     }
+    
+private Integer energy(Color[][] arr, int row, int col) {
+    	
+    	// values of RGB across x axis
+		int redX = 0;
+		int blueX = 0;
+		int greenX = 0;
+		
+		// values of RGB across y axis
+		int redY = 0;
+		int blueY = 0;
+		int greenY = 0;
+		
+		// change of RGB values across the axis
+		int changeX = 0;
+		int changeY = 0;
+		
+    	if(row == arr[0].length - 1) {
+    		
+    		if (col == 0){
+    			
+    			// find RGB value across x axis
+    			// if the pixel is in the first column, the left pixel is in the same row, last column
+        		redX = Math.abs(arr[arr.length-1][row].getRed() + arr[col + 1][row].getRed());
+        		greenX = Math.abs(arr[arr.length-1][row].getGreen() + arr[col + 1][row].getGreen());
+        		blueX = Math.abs(arr[arr.length-1][row].getBlue() + arr[col + 1][row].getBlue());
+        		
+        	} else if (col == arr.length - 1) {
+        		
+        		// find RGB value across x axis
+        		// if the pixel is in the first column, the left pixel is in the same row, last column
+        		redX = Math.abs(arr[col - 1][row].getRed() + arr[0][row].getRed());
+        		greenX = Math.abs(arr[col - 1][row].getGreen() + arr[0][row].getGreen());
+        		blueX = Math.abs(arr[col - 1][row].getBlue() + arr[0][row].getBlue());
+        		
+        	}
+    		
+    		// find RGB value across Y axis
+    		// if we are in last row, the bottom pixel is on same column, top row
+    		redY = Math.abs(arr[col][row - 1].getRed() + arr[col][0].getRed());
+    		greenY = Math.abs(arr[col][row - 1].getGreen() + arr[col][0].getGreen());
+    		blueY = Math.abs(arr[col][row - 1].getBlue() + arr[col][0].getBlue());
+    		
+    	} else if (row == 0){
+    		
+    		if (col == 0){
+    			
+    			// find RGB value across x axis
+    			// if the pixel is in the first column, the left pixel is in the same row, last column
+        		redX = Math.abs(arr[arr.length-1][row].getRed() + arr[col + 1][row].getRed());
+        		greenX = Math.abs(arr[arr.length-1][row].getGreen() + arr[col + 1][row].getGreen());
+        		blueX = Math.abs(arr[arr.length-1][row].getBlue() + arr[col + 1][row].getBlue());
+        		
+        	} else if (col == arr.length - 1) {
+        		
+        		// find RGB value across x axis
+        		// if the pixel is in the first column, the left pixel is in the same row, last column
+        		redX = Math.abs(arr[col - 1][row].getRed() + arr[0][row].getRed());
+        		greenX = Math.abs(arr[col - 1][row].getGreen() + arr[0][row].getGreen());
+        		blueX = Math.abs(arr[col - 1][row].getBlue() + arr[0][row].getBlue());
+        		
+        	}
+    		
+    		// find RGB value across Y axis
+    		// if we are in first row, the top pixel is on same column, bottom row
+    		redY = Math.abs(arr[col][arr[0].length - 1].getRed() + arr[col][row + 1].getRed());
+    		greenY = Math.abs(arr[col][arr[0].length - 1].getGreen() + arr[col][row + 1].getGreen());
+    		blueY = Math.abs(arr[col][arr[0].length - 1].getBlue() + arr[col][row + 1].getBlue());
+    		
+    	}else {
+
+    		if (col == 0){
+    			
+    			// find RGB value across x axis
+    			// if the pixel is in the first column, the left pixel is in the same row, last column
+        		redX = Math.abs(arr[arr.length-1][row].getRed() + arr[col + 1][row].getRed());
+        		greenX = Math.abs(arr[arr.length-1][row].getGreen() + arr[col + 1][row].getGreen());
+        		blueX = Math.abs(arr[arr.length-1][row].getBlue() + arr[col + 1][row].getBlue());
+        		
+        	} else if (col == arr.length - 1) {
+        		
+        		// find RGB value across x axis
+        		// if the pixel is in the first column, the left pixel is in the same row, last column
+        		redX = Math.abs(arr[col - 1][row].getRed() + arr[0][row].getRed());
+        		greenX = Math.abs(arr[col - 1][row].getGreen() + arr[0][row].getGreen());
+        		blueX = Math.abs(arr[col - 1][row].getBlue() + arr[0][row].getBlue());
+        		
+        	}
+    		
+    		// find RGB value across Y axis
+    		redY = Math.abs(arr[col][row - 1].getRed() + arr[col][row + 1].getRed());
+    		greenY = Math.abs(arr[col][row - 1].getGreen() + arr[col][row + 1].getGreen());
+    		blueY = Math.abs(arr[col][row - 1].getBlue() + arr[col][row + 1].getBlue());
+    	}
+    	
+		// find the change in x
+		changeX = redX*redX + greenX*greenX + blueX*blueX;
+		
+		// find the change in y
+		changeY = redY*redY + greenY*greenY + blueY*blueY;
+		
+		// returns energy of input
+		return changeX + changeY;
+    }
+
 }
