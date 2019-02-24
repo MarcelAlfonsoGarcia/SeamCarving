@@ -8,8 +8,13 @@ import java.awt.Color;
  * component, and saves new image 
  */
 
+
+
+
 public class Images {
 
+	public int imageArray[][];
+	
     public static void main(String args[]) throws IOException {
         File file = new File("./DSCF1643.JPG");
         BufferedImage imageSource = ImageIO.read(file);
@@ -43,6 +48,28 @@ public class Images {
 	    }
 	}
 	
+	
 	ImageIO.write(imageNew, "JPEG", fileNew);
     }
+    
+   
+    public int getMin(int[] array) {
+    	int theMin = 0;
+		for (int i=0; i<=array.length; i++) {
+			if(array[i]> theMin) {
+				theMin = array[i];
+			}
+		}
+		return theMin;
+    }
+    
+    //column and row of lowest energy pixel
+    public void nextMin(int col, int row) {
+    	int aboveCol = imageArray[col][row-1];
+    	int leftCol = imageArray[col][row-1];
+    	int rightCol = imageArray[col][row-1];
+    	
+    	image[col][rows]
+    }
+    
 }
