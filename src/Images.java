@@ -19,7 +19,7 @@ public class Images {
 	public static Color image[][];
 
 	public static void main(String args[]) throws IOException {
-		File file = new File("./rainbow.jpg");
+		File file = new File("./cuba.JPG");
 		BufferedImage imageSource = ImageIO.read(file);
 		rows = imageSource.getHeight();
 		cols = imageSource.getWidth();
@@ -39,14 +39,17 @@ public class Images {
 		}
 
 		// create the array of sum of energies and carve it 
-		Pair[][] array = sumArray();
-		for (int i = 0; i < 1; i++) {
-			carve(array, array.length - 1, getMinCol(array[array.length - 1]));
+		Pair[][] array = sumArray(image, rows, cols);
+		for (int i = 0; i < 100; i++) {
+			carve(array, image, array.length - 1, getMinCol(array[array.length - 1]));
+			
+			// recalculate energies and seams
+			array = sumArray(image, rows, array[0].length);
 		}
 
 		/* Save as new image where g values set to 0 */
 		BufferedImage imageNew = new BufferedImage(array[0].length, rows, BufferedImage.TYPE_INT_RGB);
-		File fileNew = new File("./carvedgerman.jpg");
+		File fileNew = new File("./carvedcuba.jpg");
 		for (int i = 0; i < array[0].length; i++) {
 			for (int j = 0; j < rows; j++) {
 				int r = image[j][i].getRed();
@@ -56,12 +59,11 @@ public class Images {
 				imageNew.setRGB(i, j, col);
 			}
 		}
-
 		ImageIO.write(imageNew, "JPEG", fileNew);
 	}
 
 	// column and row of lowest energy pixel
-	public static void carve(Pair[][] imageArray, int row, int col) {
+	public static void carve(Pair[][] imageArray, Color[][] image, int row, int col) {
 
 		// if you're at the top row stop the recursion
 		if (row == 0) {
@@ -69,16 +71,21 @@ public class Images {
 			// create the new row and add all the elements of the previous row,
 			// except for the element at the column to be carved
 			Pair newArr[] = new Pair[imageArray[0].length - 1];
+			Color newImg[] = new Color[image[0].length - 1];
+			
 			for (int i = 0; i < imageArray[0].length - 1; i++) {
 
 				if (i < col) {
 					newArr[i] = imageArray[row][i];
+					newImg[i] = image[row][i];
 				} else {
 					newArr[i] = imageArray[row][i + 1];
+					newImg[i] = image[row][i+1];
 				}
 			}
 
 			imageArray[0] = newArr;
+			image[0] = newImg;
 
 		} else {
 
@@ -87,29 +94,34 @@ public class Images {
 			 * imageArray, meaning that some of the columns for old seams will have been deleted already so we have
 			 * to find a way to find new seams after every carve
 			 */
-			System.out.println(row + ", " + col + ", " + (imageArray[row].length - 1));
+			// System.out.println(row + ", " + col + ", " + (imageArray[row].length - 1));
 			
 			// recurse before you remove the element
-			carve(imageArray, row - 1, imageArray[row][col].getNext());
+			carve(imageArray, image, row - 1, imageArray[row][col].getNext());
 
 			// create the new row and add all the elements of the previous row,
 			// except for the element at the column to be carved
 			Pair newArr[] = new Pair[imageArray[row].length - 1];
+			Color newImg[] = new Color[image[row].length - 1];
+			
 			for (int i = 0; i < imageArray[row].length - 1; i++) {
 
 				if (i < col) {
 					newArr[i] = imageArray[row][i];
+					newImg[i] = image[row][i];
 				} else {
 					newArr[i] = imageArray[row][i + 1];
+					newImg[i] = image[row][i+1];
 				}
 			}
 
 			imageArray[row] = newArr;
+			image[row] = newImg;
 		}
 	}
 
 	// summed up energies array
-	public static Pair[][] sumArray() {
+	public static Pair[][] sumArray(Color[][] image, int rows, int cols) {
 
 		Pair array[][] = new Pair[rows][cols];
 
