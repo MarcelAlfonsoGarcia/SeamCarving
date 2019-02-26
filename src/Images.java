@@ -19,7 +19,7 @@ public class Images {
 	public static Color image[][];
 
 	public static void main(String args[]) throws IOException {
-		File file = new File("./DSCF1643.JPG");
+		File file = new File("./rainbow.jpg");
 		BufferedImage imageSource = ImageIO.read(file);
 		rows = imageSource.getHeight();
 		cols = imageSource.getWidth();
@@ -38,48 +38,22 @@ public class Images {
 			}
 		}
 
+		// create the array of sum of energies and carve it 
 		Pair[][] array = sumArray();
-		carve(array, array.length - 1, getMin(array[array.length - 1]));
-
-		Color[][] newImage = new Color[rows][cols - 1];
-		boolean skip = false;
-
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-
-				// if we already skipped an element in the array, we
-				if (skip) {
-
-					if (j < cols - 1) {
-						newImage[i][j] = image[i][j + 1];
-					}
-
-				} else {
-					if (array[i][j] == null) {
-
-						if(j < cols - 1) {
-							newImage[i][j] = image[i][j + 1];
-							skip = true;
-						}
-					} else {
-						newImage[i][j] = image[i][j];
-					}
-				}
-			}
-
-			skip = false;
+		for (int i = 0; i < 1; i++) {
+			carve(array, array.length - 1, getMinCol(array[array.length - 1]));
 		}
 
 		/* Save as new image where g values set to 0 */
-		BufferedImage imageNew = new BufferedImage(rows, cols - 1, BufferedImage.TYPE_INT_RGB);
-		File fileNew = new File("./leaves_out_javas.jpg");
-		for (int i = 0; i < cols - 1; i++) {
+		BufferedImage imageNew = new BufferedImage(array[0].length, rows, BufferedImage.TYPE_INT_RGB);
+		File fileNew = new File("./carvedgerman.jpg");
+		for (int i = 0; i < array[0].length; i++) {
 			for (int j = 0; j < rows; j++) {
-				int r = newImage[j][i].getRed();
-				int g = 0;
-				int b = newImage[j][i].getBlue();
+				int r = image[j][i].getRed();
+				int g = image[j][i].getGreen();
+				int b = image[j][i].getBlue();
 				int col = (r << 16) | (g << 8) | b;
-				imageNew.setRGB(j, i, col);
+				imageNew.setRGB(i, j, col);
 			}
 		}
 
@@ -89,11 +63,48 @@ public class Images {
 	// column and row of lowest energy pixel
 	public static void carve(Pair[][] imageArray, int row, int col) {
 
+		// if you're at the top row stop the recursion
 		if (row == 0) {
-			imageArray[row][col] = null;
+
+			// create the new row and add all the elements of the previous row,
+			// except for the element at the column to be carved
+			Pair newArr[] = new Pair[imageArray[0].length - 1];
+			for (int i = 0; i < imageArray[0].length - 1; i++) {
+
+				if (i < col) {
+					newArr[i] = imageArray[row][i];
+				} else {
+					newArr[i] = imageArray[row][i + 1];
+				}
+			}
+
+			imageArray[0] = newArr;
+
 		} else {
+
+			/**
+			 * So here our problem is that once we've recursed enough times, we will decrease the length of the
+			 * imageArray, meaning that some of the columns for old seams will have been deleted already so we have
+			 * to find a way to find new seams after every carve
+			 */
+			System.out.println(row + ", " + col + ", " + (imageArray[row].length - 1));
+			
+			// recurse before you remove the element
 			carve(imageArray, row - 1, imageArray[row][col].getNext());
-			imageArray[row][col] = null;
+
+			// create the new row and add all the elements of the previous row,
+			// except for the element at the column to be carved
+			Pair newArr[] = new Pair[imageArray[row].length - 1];
+			for (int i = 0; i < imageArray[row].length - 1; i++) {
+
+				if (i < col) {
+					newArr[i] = imageArray[row][i];
+				} else {
+					newArr[i] = imageArray[row][i + 1];
+				}
+			}
+
+			imageArray[row] = newArr;
 		}
 	}
 
@@ -183,12 +194,15 @@ public class Images {
 		return array;
 	}
 
-	// get minimum value of array
-	public static int getMin(Pair[] array) {
+	// get column of the minimum value of array
+	public static int getMinCol(Pair[] array) {
 		int theMin = 0;
 		for (int i = 0; i < array.length; i++) {
-			if (array[i].getEnergy() > theMin) {
-				theMin = array[i].getEnergy();
+
+			if (array[i] != null) {
+				if (array[i].getEnergy() > theMin) {
+					theMin = i;
+				}
 			}
 		}
 		return theMin;
@@ -304,52 +318,4 @@ public class Images {
 		// returns energy of input
 		return changeX + changeY;
 	}
-
-//	// column and row of lowest energy pixel
-//		public void nextMin(Color[][] colorArray, int[][] imageArray, int col, int row) {
-//
-//			// until you reach the top of the image
-//			if (row == 0) {
-//
-//				// imageArray[col][row] = null; delete pixel here
-//				/// shift array over
-//
-//			} else {
-//
-//				// check left and right boundaries
-//				int aboveCol = imageArray[col][row - 1];
-//				int leftCol;
-//				int rightCol;
-//				if (col != 0) {
-//					leftCol = imageArray[col - 1][row - 1];
-//				} else {
-//					leftCol = imageArray[col][row - 1];
-//				}
-//				if (col != imageArray.length - 1) {
-//					rightCol = imageArray[col + 1][row - 1];
-//				} else {
-//					rightCol = imageArray[col][row - 1];
-//				}
-//
-//				// aboveCol is the smallest
-//				if (aboveCol <= leftCol && aboveCol <= rightCol) {
-//					nextMin(colorArray, imageArray, col, row - 1);
-//					// imageArray[col][row] = null; delete pixel here
-//					/// shift array over
-//				}
-//				// rightCol is the smallest
-//				else if (rightCol <= leftCol && rightCol <= aboveCol) {
-//					nextMin(colorArray, imageArray, col + 1, row - 1);
-//					// imageArray[col][row] = null; delete pixel here
-//					// delete from both arrays
-//					/// shift array over
-//				}
-//				// leftCol is the smallest
-//				else {
-//					nextMin(colorArray, imageArray, col - 1, row - 1);
-//					// imageArray[col][row] = null; delete pixel here
-//					/// shift array over
-//				}
-//			}
-//		}
 }
