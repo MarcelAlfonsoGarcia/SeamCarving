@@ -40,7 +40,7 @@ public class Images {
 
 		// create the array of sum of energies and carve it 
 		Pair[][] array = sumArray(image, rows, cols);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 1000; i++) {
 			carve(array, image, array.length - 1, getMinCol(array[array.length - 1]));
 			
 			// recalculate energies and seams
@@ -49,7 +49,7 @@ public class Images {
 
 		/* Save as new image where g values set to 0 */
 		BufferedImage imageNew = new BufferedImage(array[0].length, rows, BufferedImage.TYPE_INT_RGB);
-		File fileNew = new File("./carvedcuba.jpg");
+		File fileNew = new File("./kk4.jpg");
 		for (int i = 0; i < array[0].length; i++) {
 			for (int j = 0; j < rows; j++) {
 				int r = image[j][i].getRed();
