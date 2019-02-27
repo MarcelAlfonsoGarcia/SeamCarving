@@ -40,7 +40,7 @@ public class Images {
 
 		// create the array of sum of energies and carve it 
 		Pair[][] array = sumArray(image, rows, cols);
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 100; i++) {
 			carve(array, image, array.length - 1, getMinCol(array[array.length - 1]));
 			
 			// recalculate energies and seams
@@ -201,11 +201,11 @@ public class Images {
 
 	// get column of the minimum value of array
 	public static int getMinCol(Pair[] array) {
-		int theMin = 0;
+		int theMin = array[0].getEnergy();
 		for (int i = 0; i < array.length; i++) {
 
 			if (array[i] != null) {
-				if (array[i].getEnergy() > theMin) {
+				if (array[i].getEnergy() < theMin) {
 					theMin = i;
 				}
 			}
@@ -237,26 +237,33 @@ public class Images {
 				// find RGB value across x axis
 				// if the pixel is in the first column, the left pixel is in the same row, last
 				// column
-				redX = Math.abs(arr[row][arr[row].length - 1].getRed() + arr[row][col + 1].getRed());
-				greenX = Math.abs(arr[row][arr[row].length - 1].getGreen() + arr[row][col + 1].getGreen());
-				blueX = Math.abs(arr[row][arr[row].length - 1].getBlue() + arr[row][col + 1].getBlue());
+				redX = Math.abs(arr[row][arr[row].length - 1].getRed() - arr[row][col + 1].getRed());
+				greenX = Math.abs(arr[row][arr[row].length - 1].getGreen() - arr[row][col + 1].getGreen());
+				blueX = Math.abs(arr[row][arr[row].length - 1].getBlue() - arr[row][col + 1].getBlue());
 
 			} else if (col == arr[row].length - 1) {
 
 				// find RGB value across x axis
 				// if the pixel is in the last column, the right pixel is in the same row, first
 				// column
-				redX = Math.abs(arr[row][col - 1].getRed() + arr[row][0].getRed());
-				greenX = Math.abs(arr[row][col - 1].getGreen() + arr[row][0].getGreen());
-				blueX = Math.abs(arr[row][col - 1].getBlue() + arr[row][0].getBlue());
+				redX = Math.abs(arr[row][col - 1].getRed() - arr[row][0].getRed());
+				greenX = Math.abs(arr[row][col - 1].getGreen() - arr[row][0].getGreen());
+				blueX = Math.abs(arr[row][col - 1].getBlue() - arr[row][0].getBlue());
 
+			} else {
+				
+				// find RGB value across x axis
+				redX = Math.abs(arr[row][col - 1].getRed() - arr[row][col + 1].getRed());
+				greenX = Math.abs(arr[row][col - 1].getGreen() - arr[row][col + 1].getGreen());
+				blueX = Math.abs(arr[row][col - 1].getBlue() - arr[row][col + 1].getBlue());
+				
 			}
 
 			// find RGB value across Y axis
 			// if we are in last row, the bottom pixel is on same column, top row
-			redY = Math.abs(arr[row - 1][col].getRed() + arr[0][col].getRed());
-			greenY = Math.abs(arr[row - 1][col].getGreen() + arr[0][col].getGreen());
-			blueY = Math.abs(arr[row - 1][col].getBlue() + arr[0][col].getBlue());
+			redY = Math.abs(arr[row - 1][col].getRed() - arr[0][col].getRed());
+			greenY = Math.abs(arr[row - 1][col].getGreen() - arr[0][col].getGreen());
+			blueY = Math.abs(arr[row - 1][col].getBlue() - arr[0][col].getBlue());
 
 		} else if (row == 0) {
 
@@ -265,26 +272,33 @@ public class Images {
 				// find RGB value across x axis
 				// if the pixel is in the first column, the left pixel is in the same row, last
 				// column
-				redX = Math.abs(arr[row][arr[row].length - 1].getRed() + arr[row][col + 1].getRed());
-				greenX = Math.abs(arr[row][arr[row].length - 1].getGreen() + arr[row][col + 1].getGreen());
-				blueX = Math.abs(arr[row][arr[row].length - 1].getBlue() + arr[row][col + 1].getBlue());
+				redX = Math.abs(arr[row][arr[row].length - 1].getRed() - arr[row][col + 1].getRed());
+				greenX = Math.abs(arr[row][arr[row].length - 1].getGreen() - arr[row][col + 1].getGreen());
+				blueX = Math.abs(arr[row][arr[row].length - 1].getBlue() - arr[row][col + 1].getBlue());
 
 			} else if (col == arr[row].length - 1) {
 
 				// find RGB value across x axis
 				// if the pixel is in the last column, the right pixel is in the same row, first
 				// column
-				redX = Math.abs(arr[row][col - 1].getRed() + arr[row][0].getRed());
-				greenX = Math.abs(arr[row][col - 1].getGreen() + arr[row][0].getGreen());
-				blueX = Math.abs(arr[row][col - 1].getBlue() + arr[row][0].getBlue());
+				redX = Math.abs(arr[row][col - 1].getRed() - arr[row][0].getRed());
+				greenX = Math.abs(arr[row][col - 1].getGreen() - arr[row][0].getGreen());
+				blueX = Math.abs(arr[row][col - 1].getBlue() - arr[row][0].getBlue());
 
+			} else {
+				
+				// find RGB value across x axis
+				redX = Math.abs(arr[row][col - 1].getRed() - arr[row][col + 1].getRed());
+				greenX = Math.abs(arr[row][col - 1].getGreen() - arr[row][col + 1].getGreen());
+				blueX = Math.abs(arr[row][col - 1].getBlue() - arr[row][col + 1].getBlue());
+				
 			}
 
 			// find RGB value across Y axis
 			// if we are in first row, the top pixel is on same column, bottom row
-			redY = Math.abs(arr[arr.length - 1][col].getRed() + arr[row + 1][col].getRed());
-			greenY = Math.abs(arr[arr.length - 1][col].getGreen() + arr[row + 1][col].getGreen());
-			blueY = Math.abs(arr[arr.length - 1][col].getBlue() + arr[row + 1][col].getBlue());
+			redY = Math.abs(arr[arr.length - 1][col].getRed() - arr[row + 1][col].getRed());
+			greenY = Math.abs(arr[arr.length - 1][col].getGreen() - arr[row + 1][col].getGreen());
+			blueY = Math.abs(arr[arr.length - 1][col].getBlue() - arr[row + 1][col].getBlue());
 
 		} else {
 
@@ -293,25 +307,32 @@ public class Images {
 				// find RGB value across x axis
 				// if the pixel is in the first column, the left pixel is in the same row, last
 				// column
-				redX = Math.abs(arr[row][arr[row].length - 1].getRed() + arr[row][col + 1].getRed());
-				greenX = Math.abs(arr[row][arr[row].length - 1].getGreen() + arr[row][col + 1].getGreen());
-				blueX = Math.abs(arr[row][arr[row].length - 1].getBlue() + arr[row][col + 1].getBlue());
+				redX = Math.abs(arr[row][arr[row].length - 1].getRed() - arr[row][col + 1].getRed());
+				greenX = Math.abs(arr[row][arr[row].length - 1].getGreen() - arr[row][col + 1].getGreen());
+				blueX = Math.abs(arr[row][arr[row].length - 1].getBlue() - arr[row][col + 1].getBlue());
 
 			} else if (col == arr[row].length - 1) {
 
 				// find RGB value across x axis
 				// if the pixel is in the last column, the right pixel is in the same row, first
 				// column
-				redX = Math.abs(arr[row][col - 1].getRed() + arr[row][0].getRed());
-				greenX = Math.abs(arr[row][col - 1].getGreen() + arr[row][0].getGreen());
-				blueX = Math.abs(arr[row][col - 1].getBlue() + arr[row][0].getBlue());
+				redX = Math.abs(arr[row][col - 1].getRed() - arr[row][0].getRed());
+				greenX = Math.abs(arr[row][col - 1].getGreen() - arr[row][0].getGreen());
+				blueX = Math.abs(arr[row][col - 1].getBlue() - arr[row][0].getBlue());
 
+			} else {
+				
+				// find RGB value across x axis
+				redX = Math.abs(arr[row][col - 1].getRed() - arr[row][col + 1].getRed());
+				greenX = Math.abs(arr[row][col - 1].getGreen() - arr[row][col + 1].getGreen());
+				blueX = Math.abs(arr[row][col - 1].getBlue() - arr[row][col + 1].getBlue());
+				
 			}
 
 			// find RGB value across Y axis
-			redY = Math.abs(arr[row - 1][col].getRed() + arr[row + 1][col].getRed());
-			greenY = Math.abs(arr[row - 1][col].getGreen() + arr[row + 1][col].getGreen());
-			blueY = Math.abs(arr[row - 1][col].getBlue() + arr[row + 1][col].getBlue());
+			redY = Math.abs(arr[row - 1][col].getRed() - arr[row + 1][col].getRed());
+			greenY = Math.abs(arr[row - 1][col].getGreen() - arr[row + 1][col].getGreen());
+			blueY = Math.abs(arr[row - 1][col].getBlue() - arr[row + 1][col].getBlue());
 		}
 
 		// find the change in x
