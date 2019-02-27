@@ -19,7 +19,7 @@ public class Images {
 	public static Color image[][];
 
 	public static void main(String args[]) throws IOException {
-		File file = new File("./cuba.JPG");
+		File file = new File("./csback.jpg");
 		BufferedImage imageSource = ImageIO.read(file);
 		rows = imageSource.getHeight();
 		cols = imageSource.getWidth();
@@ -40,7 +40,7 @@ public class Images {
 
 		// create the array of sum of energies and carve it 
 		Pair[][] array = sumArray(image, rows, cols);
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 200; i++) {
 			carve(array, image, array.length - 1, getMinCol(array[array.length - 1]));
 			
 			// recalculate energies and seams
@@ -49,7 +49,7 @@ public class Images {
 
 		/* Save as new image where g values set to 0 */
 		BufferedImage imageNew = new BufferedImage(array[0].length, rows, BufferedImage.TYPE_INT_RGB);
-		File fileNew = new File("./kk4.jpg");
+		File fileNew = new File("./420.jpg");
 		for (int i = 0; i < array[0].length; i++) {
 			for (int j = 0; j < rows; j++) {
 				int r = image[j][i].getRed();
