@@ -40,7 +40,7 @@ public class Images {
 
 		// create the array of sum of energies and carve it 
 		Pair[][] array = sumArray(image, rows, cols);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 1000; i++) {
 			carve(array, image, array.length - 1, getMinCol(array[array.length - 1]));
 			
 			// recalculate energies and seams
@@ -88,13 +88,6 @@ public class Images {
 			image[0] = newImg;
 
 		} else {
-
-			/**
-			 * So here our problem is that once we've recursed enough times, we will decrease the length of the
-			 * imageArray, meaning that some of the columns for old seams will have been deleted already so we have
-			 * to find a way to find new seams after every carve
-			 */
-			// System.out.println(row + ", " + col + ", " + (imageArray[row].length - 1));
 			
 			// recurse before you remove the element
 			carve(imageArray, image, row - 1, imageArray[row][col].getNext());
