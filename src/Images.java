@@ -201,11 +201,11 @@ public class Images {
 
 	// get column of the minimum value of array
 	public static int getMinCol(Pair[] array) {
-		int theMin = array[0].getEnergy();
+		int theMin = 0;
 		for (int i = 0; i < array.length; i++) {
 
 			if (array[i] != null) {
-				if (array[i].getEnergy() < theMin) {
+				if (array[i].getEnergy() < array[theMin].getEnergy()) {
 					theMin = i;
 				}
 			}
